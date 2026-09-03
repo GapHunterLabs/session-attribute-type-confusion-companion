@@ -1,0 +1,46 @@
+<!-- Plugin Configuration File. Read more: https://plugins.jetbrains.com/docs/intellij/plugin-configuration-file.html -->
+<idea-plugin>
+    <id>dev.gaphunter.sessionattributetypeconfusioncompanion</id>
+    <name>Session Attribute Type Confusion Companion</name>
+    <vendor>Gap Hunter Labs</vendor>
+    <description><![CDATA[
+        <p>Flags <code>(TypeB) session.getAttribute("key")</code> /
+        <code>(TypeB) context.getAttribute("key")</code> when every
+        known <code>setAttribute("key", ...)</code> write site for that
+        exact string key, anywhere in the project, stores a value whose
+        static type is genuinely INCOMPATIBLE with <code>TypeB</code>
+        according to the platform's own type system
+        (<code>PsiType.isAssignableFrom</code>) -- a guaranteed
+        <code>ClassCastException</code> at runtime (CWE-843). The
+        Servlet API predates Java 5 generics: <code>getAttribute</code>
+        always returns <code>Object</code>, and this mismatch between
+        what was stored and what the reader expects is a real,
+        documented pattern (Coderanch, Experts Exchange) that only
+        surfaces at runtime otherwise.</p>
+        <p>First mechanism in this catalog to use REAL type-
+        compatibility checking instead of comparing type names as
+        text. Correlation is by exact string-literal KEY across the
+        whole project, not by call graph or field name -- the write
+        and read sites can be in completely unrelated classes.</p>
+        <p>Stated honestly: v0.1 only <code>HttpSession</code>/
+        <code>ServletContext</code>; the key must be an identical
+        string literal on both sides; deliberately conservative when a
+        key has a mix of compatible and incompatible write types (left
+        unflagged rather than risk a false positive). No dedicated
+        Marketplace plugin found for this exact angle.</p>
+        <p>Free. No license nags, no telemetry, no network calls.</p>
+    ]]></description>
+
+    <depends>com.intellij.modules.platform</depends>
+    <depends>com.intellij.java</depends>
+
+    <extensions defaultExtensionNs="com.intellij">
+        <localInspection language="JAVA"
+            groupName="Session Attribute Type Confusion Companion"
+            displayName="Session/context attribute cast to a genuinely incompatible type"
+            enabledByDefault="true"
+            level="WARNING"
+            implementationClass="dev.gaphunter.sessionattributetypeconfusioncompanion.inspection.SessionAttributeTypeConfusionInspection"/>
+        <notificationGroup id="Session Attribute Type Confusion Companion" displayType="BALLOON"/>
+    </extensions>
+</idea-plugin>
