@@ -1,0 +1,10 @@
+<html>
+<body>
+Reports a cast such as <code>(TypeB) session.getAttribute("key")</code> or
+<code>(TypeB) context.getAttribute("key")</code> when every <code>setAttribute("key", ...)</code> for that key in the project
+stores a value whose type is incompatible with <code>TypeB</code>.
+<!-- tooltip end -->
+<p><code>getAttribute</code> returns <code>Object</code>, so the compiler cannot catch the mismatch: the cast is a
+guaranteed <code>ClassCastException</code> at runtime (CWE-843).</p>
+</body>
+</html>
