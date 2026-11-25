@@ -5,15 +5,7 @@ site for that exact key stores a genuinely incompatible type.
 
 ## Why it exists
 
-CWE-843. The Servlet API predates Java 5 generics: `getAttribute`
-always returns `Object`, so nothing in the language stops a mismatch
-between what one part of the code stores under a key and what another
-part expects when it reads it back -- a real, documented pattern in
-technical forums (Coderanch, Experts Exchange), only discovered at
-runtime as a `ClassCastException` otherwise. Searched explicitly for a
-named competitor (FindBugs rule, CodeQL query, Datadog rule) for this
-exact angle and found none -- stated honestly, same as this catalog's
-other weaker-evidence Tier -3 entries.
+CWE-843. The Servlet API predates Java 5 generics: `getAttribute` always returns `Object`, so nothing in the language stops a mismatch between what one part of the code stores under a key and what another part expects when it reads it back. It is a real, documented pattern in technical forums (Coderanch, Experts Exchange) that otherwise only shows up at runtime as a `ClassCastException`. I searched explicitly for a named competitor (a FindBugs rule, a CodeQL query, a Datadog rule) for this exact angle and found none, and I say so plainly: the evidence for this gap is weaker than for most plugins in this catalog.
 
 ## Why built this way
 
